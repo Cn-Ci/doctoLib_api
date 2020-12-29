@@ -79,16 +79,17 @@ class CategorieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="categorie_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="categorie_delete")
      */
-    public function delete(Request $request, Categorie $categorie): Response
+    public function delete(Categorie $categorie): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($categorie);
-            $entityManager->flush();
-        }
-
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($categorie);
+        $entityManager->flush();
+        $this->addFlash( 
+            'success',
+            "L'annonce {$categorie->getLibelle()} a bien été supprimé !"
+        );
         return $this->redirectToRoute('categorie_index');
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Form\ProduitType;
-use Psr\Log\LoggerInterface;
 use App\Service\ProduitService;
+use App\Repository\UserRepository;
 use App\Repository\ProduitRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,24 +40,23 @@ class ProduitController extends AbstractController
     }
     
     /**
-    * @Route("/affiche", name="tableau_produit")
+    * @Route("/affiche", name="list_produit")
     */
-    public function afficheProduits(ProduitService $service, Categorie $categorie): Response
+    public function afficheProduits(ProduitService $service): Response
     {
         try {
-        $categorie = new categorie;
+        
         //$repo = $this->getDoctrine()->getRepository(Produit::class);
         //$produits = $repo->findAll();
         $produits = $service->searchAll();
         
         } catch (\ProduitException $e) {
-            return $this->render('produit/tableau.html.twig', [
+            return $this->render('produit/list.html.twig', [
                 'produits' => [],
                 'error' => $e->getMessage()
                 ]);
         }
-        return $this->render('produit/tableau.html.twig', [
-            'categorie' => $categorie,
+        return $this->render('produit/list.html.twig', [
             'produits' => $produits,
         ]);
     }
@@ -66,7 +66,7 @@ class ProduitController extends AbstractController
     *
     * @return Response
     */
-    public function add(ProduitService $service, Request $request, LoggerInterface $logger): Response
+    public function add(ProduitService $service, Request $request): Response
     {
         try {
             $produit = new Produit();
@@ -88,10 +88,10 @@ class ProduitController extends AbstractController
                     'success',
                     "L'annonce {$produit->getDesignation()} a bien été ajouté !"
                 );
-                return $this->redirectToRoute("tableau_produit");
+                return $this->redirectToRoute("list_produit");
             }
         } catch (\ProduitException $ex) {
-            return $this->render('produit/tableau.html.twig', [
+            return $this->render('produit/list.html.twig', [
                 'produits' => [],
                 'error' => $e->getMessage(),
                 ]);
@@ -101,7 +101,7 @@ class ProduitController extends AbstractController
                 'title' => 'Ajout',
                 'titreForm' => "Ajouter une nouvelle annonce ",
                 'prenom' => $prenom,
-                'monform' => $form->createView(),
+                'form' => $form->createView(),
                 'btnTitle' => 'Ajouter un produit'
             ]);
     } 
@@ -127,10 +127,10 @@ class ProduitController extends AbstractController
                         'success',
                         "L'annonce {$produit->getDesignation()} a bien été modifier !"
                     );
-                    return $this->redirectToRoute("tableau_produit");
+                    return $this->redirectToRoute("list_produit");
                 }
         } catch (\ProduitException $e) {
-            return $this->render('produit/tableau.html.twig', [
+            return $this->render('produit/list.html.twig', [
                 'produits' => [],
                 'error' => $e->getMessage(),
                 ]);
@@ -161,22 +161,21 @@ class ProduitController extends AbstractController
                 'success',
                 "L'annonce {$produit->getDesignation()} a bien été supprimé !"
             );
-            return $this->redirectToRoute('tableau_produit');
+            return $this->redirectToRoute('list_produit');
         } catch (\ProduitException $e) {
             $prenom = 'cindy';
-            return $this->render('produit/tableau.html.twig', [
-                'controller_name' => 'ProduitController',
+            return $this->render('produit/list.html.twig', [
                 'error' => $e->getMessage(),
             ]);
         }
-        return $this->render('produit/tableau.html.twig', [
-            'controller_name' => 'ProduitController',
+        return $this->render('produit/list.html.twig', [
         ]);
     }
     
      /** Permet d'afficher une seule annonce
      * 
      * @Route("/show/{id}", name ="show_produit")
+     * 
      * 
      * @return Response
      */
@@ -186,12 +185,12 @@ class ProduitController extends AbstractController
             // $produit = $repo->findOneById($id);
 
             return $this->render('produit/show.html.twig', [ 
-                'controller_name' => 'ProduitController',
                 'title' => 'Consultation',
-                'produit' => $produit
+                'produit' => $produit,
             ]);
         } catch (\ProduitException $ex) {
             echo "Exception Found - " . $ex->getMessage() . "<br/>";
         }
     }
+
 }

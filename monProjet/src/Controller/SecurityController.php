@@ -55,7 +55,7 @@ class SecurityController extends AbstractController
                 'success',
                 'Les modifications du profil ont bien été enregistrées'
             );
-            return $this->redirectToRoute("tableau_produit");
+            return $this->redirectToRoute("list_produit");
         }
 
         return $this->render('registration/registerEdit.html.twig', [
@@ -64,7 +64,7 @@ class SecurityController extends AbstractController
     }
 
      /**
-     * @Route("/passwordEdit", name="register_edit")
+     * @Route("/passwordEdit", name="password_edit")
      * 
      * @return Response
      */
@@ -78,9 +78,9 @@ class SecurityController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                'Les modifications du profil ont bien été enregistrées'
+                'Le mdp du profil ont bien été modifié'
             );
-            return $this->redirectToRoute("tableau_produit");
+            return $this->redirectToRoute("list_produit");
         }
 
         return $this->render('registration/passwordEdit.html.twig', [

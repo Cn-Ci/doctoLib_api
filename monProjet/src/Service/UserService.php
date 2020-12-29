@@ -4,7 +4,7 @@ namespace App\Service;
 
 use ProduitException;
 use App\Entity\User;
-use App\Repository\ChadprodRepository\UserRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

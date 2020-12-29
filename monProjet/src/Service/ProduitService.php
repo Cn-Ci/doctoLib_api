@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use ProduitException;
-use App\Entity\ChadprodEntity\Produit;
-use App\Repository\ChadprodRepository\ProduitRepository;
+use App\Entity\Produit;
+use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\ProduitRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -53,6 +56,22 @@ class Produit
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorieProduit;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="client")
+     */
+    private $Users;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Client::class, mappedBy="produit")
+     */
+    private $clients;
+
+    public function __construct()
+    {
+        $this->Users = new ArrayCollection();
+        $this->clients = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +122,42 @@ class Produit
     public function setCategorieProduit(?Categorie $categorieProduit): self
     {
         $this->categorieProduit = $categorieProduit;
+
+        return $this;
+    }
+
+
+    public function __toString() {
+        if(is_null($this->categorieProduit)) {
+            return 'NULL';
+        }
+        return $this->categorieProduit;
+    }
+
+
+    /**
+     * @return Collection|Client[]
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): self
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients[] = $client;
+            $client->addProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): self
+    {
+        if ($this->clients->removeElement($client)) {
+            $client->removeProduit($this);
+        }
 
         return $this;
     }

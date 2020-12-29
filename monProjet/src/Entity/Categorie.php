@@ -25,7 +25,7 @@ class Categorie
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="categorieProduit")
+     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="categorieProduit", orphanRemoval=true)
      */
     private $produit;
 
