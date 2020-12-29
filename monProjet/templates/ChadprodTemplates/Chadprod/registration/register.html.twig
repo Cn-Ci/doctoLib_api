@@ -1,0 +1,40 @@
+{% extends 'ChadprodTemplates/base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+<div class="text-center">
+    <center>        
+    <h1>Register</h1>
+
+        {{ form_start(registrationForm) }}
+        <div class="col-4">
+            {{ form_row(registrationForm.email) }}
+        </div>
+        <div class="col-4">
+            {{ form_row(registrationForm.nom) }}
+        </div>
+        <div class="col-4">
+            {{ form_row(registrationForm.prenom )}}
+        </div>
+        <div class="col-4 align-center" >
+            {{ form_row(registrationForm.dateAnniversaire) }}
+        </div>
+        <div class="col-4">
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+        </div>
+        <div class="col-4">
+            {{ form_row(registrationForm.agreeTerms) }}
+        </div>
+
+            <button type="submit" class="btn btn-success">Register</button>
+        {{ form_end(registrationForm) }}
+    </center>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'ChadprodTemplates/base.html.twig' %}
+
+{% block title %} Modification du profil {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Modifier votre profil ici </h1>
+    <center>
+        <div class="col-6 text-center">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+
+            <button type="submit" class="btn btn-success">Enregister les Modifications </button>
+        </div>
+        {{ form_end(form) }}
+    </center>
+</div>
+
+{% endblock %}

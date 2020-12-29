@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
+use App\Repository\ChadprodRepository\UserRepository;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -71,6 +71,11 @@ class User implements UserInterface
      */
     private $dateInscription;
 
+    public function __toString() {
+
+        return $this->id . $this->email . $this->nom .$this->prenom . $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,7 +110,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
@@ -208,6 +213,7 @@ class User implements UserInterface
 
         return $this;
     }
+
        /**
      * String representation of object
      * @link https://php.net/manual/en/serializable.serialize.php
@@ -225,7 +231,7 @@ class User implements UserInterface
             $this->nom,
             $this->prenom,
             $this->dateAnniversaire,
-            $this->dateInscription
+            $this->dateInscription,
         ]);
     }
  

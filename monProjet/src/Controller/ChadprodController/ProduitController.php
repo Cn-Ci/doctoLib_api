@@ -1,0 +1,196 @@
+<?php
+
+namespace App\Controller\ChadprodController;
+
+use App\Entity\User;
+use App\Entity\ChadprodEntity\Produit;
+use App\Entity\ChadprodEntity\Categorie;
+use App\Form\ProduitType;
+use App\Service\ProduitService;
+use App\Repository\ChadprodRepository\UserRepository;
+use App\Repository\ChadprodRepository\ProduitRepository;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Exception\ProduitException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+    /**
+     * @Route("/produit")
+     */
+class ProduitController extends AbstractController
+{
+     /**
+    * @Route("/", name="index_produit")
+    */
+    public function index(ProduitService $service): Response
+    {
+        try {
+        } catch (\ProduitException $e) {
+            return $this->render('ChadprodTemplates/Chadprod/produit/index.html.twig', [
+                'produits' => [],
+                'error' => $e->getMessage()
+                ]);
+        }
+        return $this->render('ChadprodTemplates/Chadprod/produit/index.html.twig', [
+        ]);
+    }
+    
+    /**
+    * @Route("/affiche", name="list_produit")
+    */
+    public function afficheProduits(ProduitService $service): Response
+    {
+        try {
+        
+        //$repo = $this->getDoctrine()->getRepository(Produit::class);
+        //$produits = $repo->findAll();
+        $produits = $service->searchAll();
+        
+        } catch (\ProduitException $e) {
+            return $this->render('ChadprodTemplates/Chadprod/produit/list.html.twig', [
+                'produits' => [],
+                'error' => $e->getMessage()
+                ]);
+        }
+        return $this->render('ChadprodTemplates/Chadprod/produit/list.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
+
+    /**
+    * @Route("/add", name="add_produit")
+    *
+    * @return Response
+    */
+    public function add(ProduitService $service, Request $request): Response
+    {
+        try {
+            $produit = new Produit();
+            $form = $this->createForm(ProduitType::class, $produit);
+            // $form = $this->createFormBuilder($produit)->add("designation")
+            //  ->add("prix")
+            //  ->add("couleur")
+            //  ->add("save", SubmitType::Class, [ "label" => "Ajouter le produit"])
+            //  ->getForm();
+            
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()){
+            //     // $produit = $form->getData();
+            //    // $manager = $this->getDoctrine()->getManager();
+            //     $manager->persist($produit);
+            //     $manager->flush();
+                $form = $service->add($produit);
+                $this->addFlash( 
+                    'success',
+                    "L'annonce {$produit->getDesignation()} a bien été ajouté !"
+                );
+                return $this->redirectToRoute("list_produit");
+            }
+        } catch (\ProduitException $ex) {
+            return $this->render('ChadprodTemplates/Chadprod/produit/list.html.twig', [
+                'produits' => [],
+                'error' => $e->getMessage(),
+                ]);
+        }
+            $prenom = 'cindy';
+            return $this->render('ChadprodTemplates/Chadprod/produit/add.html.twig', [
+                'title' => 'Ajout',
+                'titreForm' => "Ajouter une nouvelle annonce ",
+                'prenom' => $prenom,
+                'form' => $form->createView(),
+                'btnTitle' => 'Ajouter un produit'
+            ]);
+    } 
+
+    /**
+    * @Route("/edit/{id}", name="edit_produit", methods={"GET","POST"})
+    * 
+    * @return Response
+    */
+   public function editProduit(ProduitService $service, Produit $produit, Request $request): Response
+   {
+        try {
+             $form = $this->createForm(ProduitType::class, $produit);
+            
+             $form->handleRequest($request);
+             if($form->isSubmitted() && $form->isValid()){
+                //     // $produit = $form->getData();
+                //    // $manager = $this->getDoctrine()->getManager();
+                //     $manager->persist($produit);
+                //     $manager->flush();
+                    $form = $service->update($produit);
+                    $this->addFlash( 
+                        'success',
+                        "L'annonce {$produit->getDesignation()} a bien été modifier !"
+                    );
+                    return $this->redirectToRoute("list_produit");
+                }
+        } catch (\ProduitException $e) {
+            return $this->render('ChadprodTemplates/Chadprod/produit/list.html.twig', [
+                'produits' => [],
+                'error' => $e->getMessage(),
+                ]);
+        }
+        $prenom = 'cindy';
+            return $this->render('ChadprodTemplates/Chadprod/produit/edit.html.twig', [
+                'title' => 'Modification',
+                'titreForm' => "Modifier l'annonce {$produit->getDesignation()}",
+                'prenom' => $prenom,
+                'produit' => $produit,
+                'form' => $form->createView(),
+                'btnTitle' => 'Modifier le produit',
+            ]);
+   } 
+
+    /**
+     * @Route("/delete/{id}", name="delete_produit")
+     * 
+     * @return Response
+     */
+    public function delete(Produit $produit, ProduitService $service): Response
+    {
+       try {
+            // $manager->remove($produit);
+            // $manager->flush();
+            $id = $service->delete($produit);
+            $this->addFlash( 
+                'success',
+                "L'annonce {$produit->getDesignation()} a bien été supprimé !"
+            );
+            return $this->redirectToRoute('list_produit');
+        } catch (\ProduitException $e) {
+            $prenom = 'cindy';
+            return $this->render('ChadprodTemplates/Chadprod/produit/list.html.twig', [
+                'error' => $e->getMessage(),
+            ]);
+        }
+        return $this->render('ChadprodTemplates/Chadprod/produit/list.html.twig', [
+        ]);
+    }
+    
+     /** Permet d'afficher une seule annonce
+     * 
+     * @Route("/show/{id}", name ="show_produit")
+     * 
+     * 
+     * @return Response
+     */
+    public function showOne(Produit $produit) {
+        try {
+            // recupere l'annonce qui correspond au produit
+            // $produit = $repo->findOneById($id);
+
+            return $this->render('ChadprodTemplates/Chadprod/produit/show.html.twig', [ 
+                'title' => 'Consultation',
+                'produit' => $produit,
+            ]);
+        } catch (\ProduitException $ex) {
+            echo "Exception Found - " . $ex->getMessage() . "<br/>";
+        }
+    }
+
+}

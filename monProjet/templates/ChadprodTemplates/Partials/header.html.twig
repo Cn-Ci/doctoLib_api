@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="navbar-collapse collapse show" id="navbarColor01" style="">
+    <ul class="navbar-nav mr-auto">   
+      <li class="nav-item">
+        <a class="nav-link" href={{ path('symprod') }}>Exercice Chamla</a>
+      </li>
+      {% if app.user %}
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('app_logout') }}>Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('register_edit') }}>Modifier mon profil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('password_edit') }}>Modifier mon mdp</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('list_produit') }}>Liste des produits</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('categorie_index') }}>Liste des Categorie</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('user_index') }}>Liste des Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href={{ path('list_clients') }}>Liste des clients</a>
+          </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href={{ path('index_produit') }}>index</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href={{ path('app_register') }}>Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href={{ path('app_login') }}>Login</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+{% for label, messages in app.flashes %}
+  <div class="contaner">
+    <div class="alert alert-{{ label }} text-center">
+        {% for message in messages %}
+          <p> {{ message }} </p>
+        {% endfor %}
+    </div>
+  </div>
+{% endfor %}
