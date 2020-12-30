@@ -16,3 +16,18 @@ div.ad-title h1, div.ad-title p {
 div.carousel-caption {
     text-shadow : 3px 3px 3px rga(0,0,0,0.5);
 }
+
+div.form-inline {
+    display: block;
+}
+
+.avatar {
+    max-width : 128px;
+    max-height: 128px;
+    border-radius: 50%;
+}
+
+.avatar-mini {
+    max-width : 70px;
+    max-height: 50px;  
+}

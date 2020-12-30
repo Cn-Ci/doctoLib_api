@@ -3,20 +3,26 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class RegistrationFormType extends AbstractType
+class RegistrationFormType extends ApplicationType
 {
+
+    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -24,11 +30,11 @@ class RegistrationFormType extends AbstractType
         $dateInscription->setDateInscription(new \DateTime('now'));
 
         $builder
-            ->add('email', EmailType::class)
-            ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
-            ->add('dateAnniversaire', BirthdayType::class)
-            ->add('agreeTerms', CheckboxType::class, [
+            ->add('email', EmailType::class, $this->getConfiguration ("Email", "Votre email.."))
+            ->add('nom', TextType::class, $this->getConfiguration ("Nom", "Votre nom de famille.."))
+            ->add('prenom', TextType::class, $this->getConfiguration ("Prenom", "Votre prénom.."))
+            ->add('dateAnniversaire', BirthdayType::class, $this->getConfiguration ("Date d'anniversaire", "Votre date d'anniversaire.."))
+            ->add('agreeTerms', CheckboxType::class , [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -36,22 +42,11 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
+            ->add('password', PasswordType::class, $this->getConfiguration("Confirmation de mot de passe", "Veuillez confirmer votre mot de passe"))
+            ->add('passwordConfirm', PasswordType::class, $this->getConfiguration("Confirmation de mot de passe", "Veuillez confirmer votre mot de passe"))
+            ->add('picture', UrlType::class, $this->getConfiguration ("Photo de profil", "Url de votre avatar.."))
+            ->add('introduction', TextType::class, $this->getConfiguration ("Introduction", "Présentez vous en quelques mots.."))
+            ->add('description', TextareaType::class, $this->getConfiguration ("Description détaillée", "C'est le moment de vous décrire en detail.."))
         ;
     }
 

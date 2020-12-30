@@ -5,20 +5,24 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
+use App\Repository\AdRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\AdRepository;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class SymProdController extends AbstractController
 {
     /**
-    * @Route("/symprod", name="symprod")
+     * Permet de voir la page d'accueil de Symprod
+     * 
+     * @Route("/symprod", name="symprod")
     */
     public function symProd(): Response
     {
@@ -27,7 +31,10 @@ class SymProdController extends AbstractController
     }
 
     /**
-    * @Route("/symprod/ads", name="symprod_ad")
+     * Permet de voir toutes les annonces 
+     * 
+     * @Route("/symprod/ads", name="symprod_ad")
+     * @IsGranted("ROLE_USER")
     */
     public function ad(AdRepository $repo): Response
     {
@@ -39,7 +46,10 @@ class SymProdController extends AbstractController
     }
 
     /**
+     * Permet de créer une annonce
+     * 
      * @Route ("/symprod/new", name="symprod_new")
+     * @IsGranted("ROLE_USER")
      * 
      * @return Response
      */
@@ -54,6 +64,9 @@ class SymProdController extends AbstractController
                 $image->setAd($ad);
                 $manager->persist($image);
             }
+
+            $ad->setAuthor($this->getUser());
+            
             $manager->persist($ad);
             $manager->flush();
 
@@ -72,9 +85,10 @@ class SymProdController extends AbstractController
     }
 
     /**
-     * Permet d'afficher le formulaire d'edition
+     * Permet de modifier l'annonce
      * 
      * @Route("/symprod/{slug}/edit", name="symprod_edit")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier !")
      *
      * @return Response
      */
@@ -120,4 +134,24 @@ class SymProdController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet de supprimer une annonce
+     * 
+     * @Route("/symprod/{slug}/delete", name="symprod_delete")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette action")
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return Response
+     */
+    public function delete(Ad $ad, EntityManagerInterface $manager){
+        $manager->remove($ad);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'annonce <strong>{$ad->getTitle()}</strong> a bien été supprimée !"
+        );
+
+        return $this->redirectToRoute('symprod');
+    }
 }

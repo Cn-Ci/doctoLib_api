@@ -18,13 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-    /**
-     * @Route("/produit")
-     */
+   
 class ProduitController extends AbstractController
 {
      /**
-    * @Route("/", name="index_produit")
+    * @Route("/home", name="index_prod")
     */
     public function index(ProduitService $service): Response
     {
@@ -40,7 +38,7 @@ class ProduitController extends AbstractController
     }
     
     /**
-    * @Route("/affiche", name="list_produit")
+    * @Route("/produit/affiche", name="list_produit")
     */
     public function afficheProduits(ProduitService $service): Response
     {
@@ -62,7 +60,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-    * @Route("/add", name="add_produit")
+    * @Route("/produit/add", name="add_produit")
     *
     * @return Response
     */
@@ -107,7 +105,7 @@ class ProduitController extends AbstractController
     } 
 
     /**
-    * @Route("/edit/{id}", name="edit_produit", methods={"GET","POST"})
+    * @Route("/produit/edit/{id}", name="edit_produit", methods={"GET","POST"})
     * 
     * @return Response
     */
@@ -147,7 +145,7 @@ class ProduitController extends AbstractController
    } 
 
     /**
-     * @Route("/delete/{id}", name="delete_produit")
+     * @Route("/produit/delete/{id}", name="delete_produit")
      * 
      * @return Response
      */
@@ -174,7 +172,7 @@ class ProduitController extends AbstractController
     
      /** Permet d'afficher une seule annonce
      * 
-     * @Route("/show/{id}", name ="show_produit")
+     * @Route("/produit/show/{id}", name ="show_produit")
      * 
      * 
      * @return Response

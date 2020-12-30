@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use ProduitException;
+use ProduitExcept;
 use App\Entity\Produit;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;

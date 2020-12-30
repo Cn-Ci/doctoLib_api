@@ -12,25 +12,32 @@
     <h1>Register</h1>
 
         {{ form_start(registrationForm) }}
-        <div class="col-4">
+        <div class="col-8">
             {{ form_row(registrationForm.email) }}
         </div>
-        <div class="col-4">
+        <div class="col-8">
             {{ form_row(registrationForm.nom) }}
         </div>
-        <div class="col-4">
+        <div class="col-8">
             {{ form_row(registrationForm.prenom )}}
         </div>
-        <div class="col-4 align-center" >
+        <div class="col-4" >
             {{ form_row(registrationForm.dateAnniversaire) }}
         </div>
-        <div class="col-4">
-            {{ form_row(registrationForm.plainPassword, {
-                label: 'Password'
-            }) }}
+        <div class="col-8">
+            {{ form_row(registrationForm.password) }}
         </div>
-        <div class="col-4">
-            {{ form_row(registrationForm.agreeTerms) }}
+        <div class="col-8">
+            {{ form_row(registrationForm.passwordConfirm )}}
+        </div>
+        <div class="col-8">
+            {{ form_row(registrationForm.picture )}}
+        </div>
+        <div class="col-8">
+            {{ form_row(registrationForm.introduction )}}
+        </div>
+        <div class="col-8">
+            {{ form_row(registrationForm.description) }}
         </div>
 
             <button type="submit" class="btn btn-success">Register</button>
