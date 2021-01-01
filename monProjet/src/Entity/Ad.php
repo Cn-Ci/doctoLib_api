@@ -82,9 +82,21 @@ class Ad
      */
     private $author;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="annonce")
+     */
+    private $bookings;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="annonce")
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -100,6 +112,63 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+
+    /**
+     * Permet de récupérer le commentaire d'un auteur par rapport à une annonce
+     *
+     * @param User $author
+     * @return Comment|null
+     */
+    public function getCommentFromAuthor(User $author){
+        foreach($this->comments as $comment) {
+            if($comment->getAuthor() === $author) return $comment;
+        }
+
+        return null;
+    }
+
+    /**
+     * Permet d'obtenir la moyenne globale des notes pour cette annonce
+     *
+     * @return float
+     */
+    public function getAvgRatings() {
+        // Calculer la somme des notations
+        $sum = array_reduce($this->comments->toArray(), function($total, $comment) {
+            return $total + $comment->getRating();
+        }, 0);
+
+        // Faire la division pour avoir la moyenne
+        if(count($this->comments) > 0) return $sum / count($this->comments);
+
+        return 0;
+    }
+
+    /**
+     * Permet d'obtenir un tableau des jours qui ne sont pas disponibles pour cette annonce
+     *
+     * @return array Un tableau d'objets DateTime représentant les jours d'occupation
+     */
+    public function getNotAvailableDays() {
+        $notAvailableDays = [];
+
+        foreach($this->bookings as $booking) {
+            // Calculer les jours qui se trouvent entre la date d'arrivée et de départ
+            $resultat = range(
+                $booking->getStartDate()->getTimestamp(), 
+                $booking->getEndDate()->getTimestamp(), 
+                24 * 60 * 60
+            );
+            
+            $days = array_map(function($dayTimestamp){
+                return new \DateTime(date('Y-m-d', $dayTimestamp));
+            }, $resultat);
+
+            $notAvailableDays = array_merge($notAvailableDays, $days);
+        }
+
+        return $notAvailableDays;
     }
 
     public function getId(): ?int
@@ -229,6 +298,66 @@ class Ad
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getAnnonce() === $this) {
+                $booking->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getAnnonce() === $this) {
+                $comment->setAnnonce(null);
+            }
+        }
 
         return $this;
     }

@@ -3,7 +3,11 @@
     <div class="card bg-light mb-3">
         <div class="card-heeder text-center">
             {{ ad.rooms }} chambres , <strong> {{ ad.price }} € / nuit</strong><br>
+            {% if ad.comments |length > 0 %}
+                {% include 'SymprodPartials/rating.html.twig' with {'rating' : ad.avgRatings} %}
+            {% else %}
             <small>Pas encore noté</small>
+            {% endif %}
         </div>
         <a href="{{ url }}">
             <img src= "http://placehold.it/500x400" alt="image"
