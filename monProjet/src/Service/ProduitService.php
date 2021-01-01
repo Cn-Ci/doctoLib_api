@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
-use ProduitExcept;
+
 use App\Entity\Produit;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Exceptions\ProduitException;
 use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -24,7 +25,7 @@ class ProduitService extends AbstractController {
     {
         try {
             $produit = $this->produitRepository->findAll();    
-        } catch (\DriverException $e) {
+        } catch (\Exception $e) {
             throw new ProduitException ("un pb est survenu", $e);
         } 
         return $produit; 
@@ -35,7 +36,7 @@ class ProduitService extends AbstractController {
         try {
         $this->produitManager->persist($produit);
         $this->produitManager->flush();
-        } catch (\DriverException $e) {
+        } catch (\Exception $e) {
             throw new ProduitException ("un pb est survenu add", $e);
         }
     }
@@ -45,7 +46,7 @@ class ProduitService extends AbstractController {
         try {
             $this->produitManager->persist($produit);
             $this->produitManager->flush();
-        } catch (\DriverException $e) {
+        } catch (\Exception $e) {
             throw new ProduitException ("un pb est survenu update", $e);
         }    
     }
@@ -55,7 +56,7 @@ class ProduitService extends AbstractController {
         try {
             $this->produitManager->remove($id);
             $this->produitManager->flush();
-        } catch (\DriverException $e) {
+        } catch (\Exception $e) {
             throw new ProduitException ("un pb est survenu delete", $e);
         }
     }

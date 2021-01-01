@@ -16,12 +16,17 @@
                 </div>
             </li>
             {% else %}
-            
             <li class="nav-item">
                 <a class="nav-link" href={{ path('app_register') }}>Inscription</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href={{ path('app_login') }}>Connexion</a>
+            
+            <li class="nav-item dropdown">
+            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">Connexion</a>
+                <div class="dropdown-menu dropdown-menu-rigth" aria-labelledby="accountDropdownLink">
+                    <a href="{{ path('app_login') }}" class="dropdown-item">Utilisateur</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ path('admin_account_login') }}" class="dropdown-item">Administrateur</a>
+                </div>
             </li>
         {% endif %}
     </ul>

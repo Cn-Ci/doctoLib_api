@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
 use App\Repository\AdRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,11 @@ class SymProdController extends AbstractController
      * 
      * @Route("/symprod", name="symprod")
     */
-    public function symProd(): Response
+    public function symProd(AdRepository $adRepo, UserRepository $userRepo): Response
     {
         return $this->render('ad/index.html.twig', [
+            'ads' => $adRepo->findBestAds(3),
+            'users' => $userRepo->findBestUsers(2)
         ]);
     }
 

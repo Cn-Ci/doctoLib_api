@@ -11,7 +11,7 @@
         <h1 class="my-5">Votre réservation (n°{{booking.id}})</h1>
 
         {% if app.request.query.get('withAlert') %}
-            <div class="alert alert-success">
+            <div class="alert alert-success rounded">
                 <h4 class="alert-heading">Bravo !</h4>
                 <p>
                     Votre réservation auprès de
@@ -59,28 +59,28 @@
                                 <a href="{{ path('user_show', {'slug': author.slug}) }}">{{ author.fullName }}</a>
                             </h4>
 
-                            <span class="badge badge-primary">{{author.ads|length}} annonces</span>
+                            <span class="badge badge-primary rounded">{{author.ads|length}} annonces</span>
                         </div>
                     </div>
                     {{author.description | raw}}
 
-                    <a href="{{ path("user_show", {'slug': author.slug}) }}" class="btn btn-primary">Plus d'infos sur {{author.prenom}}</a>
+                    <a href="{{ path("user_show", {'slug': author.slug}) }}" class="btn btn-primary p-1 rounded">Plus d'infos sur {{author.prenom}}</a>
                 </div>
 
                 <div class="alert alert-light" id="comment">
                     <h2 class="alert-heading">Votre avis compte !</h2>
                     {% if date() > date(booking.endDate) %}
-                        {% set comment = booking.ad.commentFromAuthor(app.user) %}
+                        {% set comment = booking.annonce.commentFromAuthor(app.user) %}
                         {% if comment is not null %}
                             <blockquote>
                                 {{comment.content}}
                             </blockquote>
 
-                            <strong>Note : </strong> {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
+                            <strong>Note : </strong> {% include 'Symprodpartials/rating.html.twig' with {'rating': comment.rating} %}
                         {% else %}
                             {{ form_start(form) }}
                             {{ form_widget(form) }}
-                            <button type="submit" class="btn btn-success">Confirmer !</button>
+                            <button type="submit" class="btn btn-success p-1 rounded">Confirmer !</button>
                             {{ form_end(form) }}
                         {% endif %}
 
@@ -101,7 +101,7 @@
 
                     {{ad.content | raw}}
 
-                    <a href="{{path('symprod_show', {'slug': ad.slug})}}" class="btn btn-primary">Plus d'informations</a>
+                    <a href="{{path('symprod_show', {'slug': ad.slug})}}" class="btn btn-primary p-1 mt-3 rounded">Plus d'informations</a>
                 </div>
             </div>
         </div>
