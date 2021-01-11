@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+
 class AdminAccountController extends AbstractController
 {
     /**
@@ -32,11 +33,10 @@ class AdminAccountController extends AbstractController
      * Permet de se deconnecter
      * 
      * @Route("/admin/logout", name="admin_account_logout")
+     * @return void
      */
-    public function logout()
-    {
-        
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    public function logout() {
+        // .. rien !
     }
 
     

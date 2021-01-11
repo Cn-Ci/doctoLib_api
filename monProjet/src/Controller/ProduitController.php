@@ -33,12 +33,13 @@ class ProduitController extends AbstractController
     */
     public function index(): Response
     {  
-        return $this->render('produit/index.html.twig', [
+        return $this->render('index.html.twig', [
         ]);
     }
+
     
     /**
-    * @Route("/produit/affiche", name="list_produit")
+    * @Route("/produit/afficher", name="list_produit")
     */
     public function afficheProduits(): Response
     {

@@ -58,7 +58,7 @@ class Patient {
     private $adresse;
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPatient")
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPatient", cascade={"persist", "remove"})
      */
     private $rendezVouses;
 
@@ -70,6 +70,12 @@ class Patient {
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getNom(): ?string

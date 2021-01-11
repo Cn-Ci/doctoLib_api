@@ -59,15 +59,19 @@ class Praticien
     private $telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPraticien")
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPraticien", cascade={"persist", "remove"})
      */
     private $rendezVouses;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="praticiens", cascade={"persist", "remove"})
+     */
+    private $adresse;
 
     public function __construct()
     {
         $this->rendezVouses = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -172,6 +176,18 @@ class Praticien
                 $rendezVouse->setRendezVousPraticien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?Adresse $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AdresseRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,6 +41,16 @@ class Adresse
      * @ORM\Column(type="string", length=255)
      */
     private $ville;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adresse", cascade={"persist", "remove"})
+     */
+    private $praticiens;
+
+    public function __construct()
+    {
+        $this->praticiens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +101,36 @@ class Adresse
     public function setVille(?string $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Praticien[]
+     */
+    public function getPraticiens(): Collection
+    {
+        return $this->praticiens;
+    }
+
+    public function addPraticien(Praticien $praticien): self
+    {
+        if (!$this->praticiens->contains($praticien)) {
+            $this->praticiens[] = $praticien;
+            $praticien->setAdresse($this);
+        }
+
+        return $this;
+    }
+
+    public function removePraticien(Praticien $praticien): self
+    {
+        if ($this->praticiens->removeElement($praticien)) {
+            // set the owning side to null (unless already changed)
+            if ($praticien->getAdresse() === $this) {
+                $praticien->setAdresse(null);
+            }
+        }
 
         return $this;
     }
