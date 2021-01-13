@@ -18,6 +18,14 @@ use App\Service\Exceptions\PraticienServiceException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+
+/**
+ * @OA\Info(
+ *      description="Praticien Management",
+ *      version="V1",
+ *      title="Praticien Management"
+ * )
+ */
 class PraticienRestController extends AbstractController
 {
     const URI_PRATICIEN_COLLECTION = "/praticiens";
@@ -34,6 +42,26 @@ class PraticienRestController extends AbstractController
     }
 
     /**
+     * @OA\Get(
+     *     path="/praticiens",
+     *     tags={"praticiens"},
+     *     summary="listes des PraticienDTO",
+     *     description="Retourne la liste des PraticienDTO",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Operation reussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/PraticienDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Praticien non trouvé",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
+     * 
      * @Get(PraticienRestController::URI_PRATICIEN_COLLECTION)
      */
     public function searchAll()
@@ -51,6 +79,43 @@ class PraticienRestController extends AbstractController
     }
 
     /**
+     * @OA\Delete(
+     *     path="/praticiens/{praticienId}",
+     *     tags={"praticiens"},
+     *     summary="Supprimer un praticien",
+     *     @OA\Parameter(
+     *         name="api_key",
+     *         in="header",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="praticienId",
+     *         in="path",
+     *         description="l'id praticien pour delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération reussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/PraticienDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Praticien non trouvé",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
+     * 
      * @Delete(PraticienRestController::URI_PRATICIEN_INSTANCE)
      *
      * @param [type] $id
@@ -66,6 +131,25 @@ class PraticienRestController extends AbstractController
     }
     
     /**
+     * @OA\Post(
+     *     path="/praticiens",
+     *     tags={"praticiens"},
+     *     summary="Créer une praticien",
+     *     description="creation de praticien",
+     *     @OA\Response(
+     *         response=405,
+     *         description="Entré valid"
+     *     ),
+     *  @OA\Response(
+     *         response=201,
+     *         description="Praticien inséré avec succès"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="PraticienDTO JSON Object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/PraticienDTO")
+     *     )
+     * )
      * 
      * @Post(PraticienRestController::URI_PRATICIEN_COLLECTION)
      * @ParamConverter("praticienDTO", converter="fos_rest.request_body")
@@ -81,6 +165,35 @@ class PraticienRestController extends AbstractController
     }
 
     /**
+     * @OA\Put(
+     *     path="/praticiens/{praticienId}",
+     *     tags={"praticiens"},
+     *     summary="modification du praticien selon id",
+     *     description="modification du praticien",
+     *     @OA\Parameter(
+     *         name="praticienId",
+     *         in="path",
+     *         description="id du praticien à modifier",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="number"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Modification invalide"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="praticien non trouvé"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Mise à jour de l'adresse",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/AdresseDTO")
+     *     )
+     * )
+     * 
      * @Put(praticienRestController::URI_PRATICIEN_INSTANCE)
      * @ParamConverter("praticienDTO", converter="fos_rest.request_body")
      * @param praticienDTO $PraticienDTO
@@ -96,6 +209,38 @@ class PraticienRestController extends AbstractController
     }
 
     /**
+     * 
+     * @OA\Get(
+     *     path="/praticiens/{praticienId}",
+     *     tags={"praticiens"},
+     *     summary="Find praticien by ID",
+     *     description="Returns a single praticien",
+     *     operationId="getpraticienById",
+     *     @OA\Parameter(
+     *         name="praticienId",
+     *         in="path",
+     *         description="ID of praticien to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/PraticienDTO"),
+     *         @OA\XmlContent(ref="#/components/schemas/PraticienDTO"),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplier"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="praticien not found"
+     *     ),
+     * )
      * @Get(praticienRestController::URI_PRATICIEN_INSTANCE)
      *
      * @return void

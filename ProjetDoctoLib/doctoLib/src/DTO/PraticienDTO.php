@@ -3,17 +3,74 @@
 namespace App\DTO;
 
 use App\DTO\AdresseDTO;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema()
+ */
 class PraticienDTO
 {
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $id;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $nom;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $prenom;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $email;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $password;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $specialite;
+
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $telephone;
+
+    /**
+     * @OA\Property(type="RendezVousDTO ")
+     *
+     * @var RendezVousDTO
+     */
     private $rendezVouses;
+
+    /**
+     * @OA\Property(type="AdresseDTO")
+     *
+     * @var AdresseDTO
+     */
     private $adresse;
 
 
@@ -94,12 +151,12 @@ class PraticienDTO
         return $this;
     }
 
-    public function getRendezVouses()
+    public function getRendezVouses(): RendezVousDTO
     {
         return $this->rendezVouses;
     }
 
-    public function setRendezVouses($rendezVouses): self
+    public function setRendezVouses(RendezVousDTO $rendezVouses): self
     {
         $this->rendezVouses = $rendezVouses;
         return $this;

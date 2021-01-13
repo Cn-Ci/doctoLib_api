@@ -2,14 +2,48 @@
 
 namespace App\DTO;
 
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Schema()
+ */
 class AdresseDTO
 {
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $id;
+
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $numeroVoie;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $rue;
+
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $codePostal;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $ville;
-    private $praticiens;
+
 
     public function setId(?int $id): self
     {

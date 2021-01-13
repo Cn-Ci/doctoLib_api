@@ -7,6 +7,7 @@ use App\DTO\AdresseDTO;
 use App\Entity\Adresse;
 use App\Mapper\AdresseMapper;
 use FOS\RestBundle\View\View;
+use OpenApi\Annotations as OA;
 use App\Service\AdresseService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -18,7 +19,13 @@ use App\Service\Exceptions\AdresseServiceException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-
+/**
+ * @OA\Info(
+ *      description="Adresse Management",
+ *      version="V1",
+ *      title="Adresse Management"
+ * )
+ */
 class AdresseRestController extends AbstractFOSRestController
 {
     const URI_ADRESSE_COLLECTION = "/adresses";
@@ -26,7 +33,6 @@ class AdresseRestController extends AbstractFOSRestController
 
     private $adresseService;
     private $entityManager;
-    private $adresseMapper;
 
     public function __construct(AdresseService $adresseService, 
                                 EntityManagerInterface $entityManager,
@@ -37,6 +43,26 @@ class AdresseRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/adresses",
+     *     tags={"adresses"},
+     *     summary="liste des AdresseDTO",
+     *     description="retourne la liste des AdresseDTO",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération réussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/AdresseDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Adresse non trouvée",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
+     * 
      * @Get(AdresseRestController::URI_ADRESSE_COLLECTION)
      */
     public function searchAll()
@@ -54,6 +80,44 @@ class AdresseRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Delete(
+     *     path="/adresses/{adresseId}",
+     *     tags={"adresses"},
+     *     summary="Supprimer une adresse",
+     *     description="Suprime une adresseDTO",
+     *     @OA\Parameter(
+     *         name="api_key",
+     *         in="header",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="adresseId",
+     *         in="path",
+     *         description="Id de l'adresse pour supprimer",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération réussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/AdresseDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Adresse non trouvée",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
+     * 
      * @Delete(AdresseRestController::URI_ADRESSE_INSTANCE)
      *
      * @param [type] $id
@@ -71,6 +135,26 @@ class AdresseRestController extends AbstractFOSRestController
 
     /**
      * 
+     * @OA\Post(
+     *     path="/adresses",
+     *     tags={"adresses"},
+     *     summary="Créer une adresse",
+     *     description="creation de l'adresse",
+     *     @OA\Response(
+     *         response=405,
+     *         description="Entrée invalide"
+     *     ),
+     *  @OA\Response(
+     *         response=201,
+     *         description="Adresse inséré avec succès"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="ProduitDTO JSON Object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/AdresseDTO")
+     *     )
+     * )
+     * 
      * @Post(AdresseRestController::URI_ADRESSE_COLLECTION)
      * @ParamConverter("adresseDTO", converter="fos_rest.request_body")
      * @return void
@@ -85,7 +169,36 @@ class AdresseRestController extends AbstractFOSRestController
         }
     }
 
-        /**
+    /**
+     * @OA\Put(
+     *     path="/adresses/{adresseId}",
+     *     tags={"adresses"},
+     *     summary="modification de l'adresse selon id",
+     *     description="modification de l'adresse",
+     *     @OA\Parameter(
+     *         name="adresseId",
+     *         in="path",
+     *         description="id de l'adresse à modifier",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="number"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Modification invalide"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Adresse non trouvée"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Mise à jour de l'adresse",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/AdresseDTO")
+     *     )
+     * )
+     * 
      * @Put(AdresseRestController::URI_ADRESSE_INSTANCE)
      * @ParamConverter("adresseDTO", converter="fos_rest.request_body")
      * @param AdresseDTO $adresseDTO
@@ -101,6 +214,38 @@ class AdresseRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/adresses/{adresseId}",
+     *     tags={"adresses"},
+     *     summary="Trouve l'adresse par l'Id",
+     *     description="Retourne une seule adresse",
+     *     operationId="getadressesById",
+     *     @OA\Parameter(
+     *         name="adresseId",
+     *         in="path",
+     *         description="l'id de ladresse ",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération réussi",
+     *         @OA\JsonContent(ref="#/components/schemas/AdresseDTO"),
+     *         @OA\XmlContent(ref="#/components/schemas/AdresseDTO"),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Id est introuvable"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Adresse non trouvée"
+     *     ),
+     * )
+     * 
      * @Get(AdresseRestController::URI_ADRESSE_INSTANCE)
      *
      * @return void

@@ -8,6 +8,7 @@ use App\Service\RendezVousService;
 use App\DTO\RendezVousDTO;
 use App\Entity\RendezVous;
 use FOS\RestBundle\View\View;
+use OpenApi\Annotations as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Put;
@@ -19,6 +20,13 @@ use App\Service\Exceptions\RendezVousServiceException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * @OA\Info(
+ *      description="RendezVous Management",
+ *      version="V1",
+ *      title="RendezVous Management"
+ * )
+ */
 class RendezVousRestController extends AbstractController
 {
     const URI_RENDEZVOUS_COLLECTION = "/rendezVouss";
@@ -35,6 +43,26 @@ class RendezVousRestController extends AbstractController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rendezVous",
+     *     tags={"rendezVous"},
+     *     summary="liste des rendezVousDTO",
+     *     description="retourne la liste des rendezVousDTO",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération réussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="rendezVous non trouvée",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
+     * 
      * @Get(RendezvousRestController::URI_RENDEZVOUS_COLLECTION)
      */
     public function searchAll()
@@ -52,6 +80,44 @@ class RendezVousRestController extends AbstractController
     }
 
     /**
+     * 
+     * @OA\Delete(
+     *     path="/rendezVous/{rendezVousId}",
+     *     tags={"rendezVous"},
+     *     summary="Supprimer une rendezVous",
+     *     description="Suprime une rendezVousDTO",
+     *     @OA\Parameter(
+     *         name="api_key",
+     *         in="header",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="rendezVousId",
+     *         in="path",
+     *         description="Id de rendezVous pour supprimer",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération réussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="rendezVous non trouvée",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
      * @Delete(RendezvousRestController::URI_RENDEZVOUS_INSTANCE)
      *
      * @param [type] $id
@@ -67,6 +133,25 @@ class RendezVousRestController extends AbstractController
     }
     
     /**
+     * @OA\Post(
+     *     path="/rendezVous",
+     *     tags={"rendezVous"},
+     *     summary="Créer un rendezVous",
+     *     description="creation d'un rendezVous",
+     *     @OA\Response(
+     *         response=405,
+     *         description="Entrée invalide"
+     *     ),
+     *  @OA\Response(
+     *         response=201,
+     *         description="rendezVous inséré avec succès"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="RendezVousDTO JSON Object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")
+     *     )
+     * )
      * 
      * @Post(RendezvousRestController::URI_RENDEZVOUS_COLLECTION)
      * @ParamConverter("rendezVousDTO", converter="fos_rest.request_body")
@@ -82,6 +167,35 @@ class RendezVousRestController extends AbstractController
     }
 
     /**
+     * @OA\Put(
+     *     path="/rendezVous/{rendezVousId}",
+     *     tags={"rendezVous"},
+     *     summary="modification du rendezVous selon id",
+     *     description="modification du rendezVous ",
+     *     @OA\Parameter(
+     *         name="rendezVousId",
+     *         in="path",
+     *         description="id du rendezVous à modifier",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="number"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Modification invalide"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="RendezVous non trouvée"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Mise à jour du rendezVous",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")
+     *     )
+     * )
+     * 
      * @Put(RendezVousRestController::URI_RENDEZVOUS_INSTANCE)
      * @ParamConverter("rendezVousDTO", converter="fos_rest.request_body")
      * @param rendezVousDTO $rendezVousDTO
@@ -97,6 +211,37 @@ class RendezVousRestController extends AbstractController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rendezVous/{rendezVousId}",
+     *     tags={"rendezVous"},
+     *     summary="Trouve le rendezVous par l'Id",
+     *     description="Retourne un seul rendezVous",
+     *     operationId="getRendezVousById",
+     *     @OA\Parameter(
+     *         name="rendezVousId",
+     *         in="path",
+     *         description="l'id de rendezVous",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération réussi",
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO"),
+     *         @OA\XmlContent(ref="#/components/schemas/RendezVousDTO"),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Id est introuvable"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="RendezVous non trouvée"
+     *     ),
+     * )
      * @Get(RendezVousRestController::URI_RENDEZVOUS_INSTANCE)
      *
      * @return void

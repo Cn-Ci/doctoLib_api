@@ -2,14 +2,49 @@
 
 namespace App\DTO;
 
-use App\Entity\Patient;
-use App\Entity\Praticien;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @OA\Schema()
+ */
 class RendezVousDTO
 {
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $id;
+
+    /**
+     * @OA\Property(
+     *     default="2017-02-02 18:31:45",
+     *     format="datetime",
+     *     description="heure et date du rendezVous",
+     *     title="heure et date du rendezVous",
+     *     type="string"
+     * )
+     *
+     * @var \DateTime
+     */
     private $dateAndHeure;
+
+    /**
+     * @OA\Property(type="PatientDTO")
+     *
+     * @var int 
+     */
     private $rendezVousPatient;
+
+    /**
+      * @OA\Property(
+     *     description="heure et date du rendezVous",
+     *     title="heure et date du rendezVous",
+     *     type=array
+     * )
+     *
+     * @var int
+     */
     private $rendezVousPraticien;
 
     public function setId(?int $id): self

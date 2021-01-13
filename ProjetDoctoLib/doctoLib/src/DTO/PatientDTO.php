@@ -2,15 +2,68 @@
 
 namespace App\DTO;
 
+use App\DTO\RendezVousDTO;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Schema()
+ */
 class PatientDTO {
 
+    /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $id;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $nom;
+
+    /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $prenom;
+
+     /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $email;
+
+     /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $password;
+
+     /**
+     * @OA\Property(type="integer")
+     *
+     * @var int
+     */
     private $telephone;
+
+     /**
+     * @OA\Property(type="string")
+     *
+     * @var string
+     */
     private $adresse;
+
+     /**
+     * @OA\Property(type="RendezVousDTO")
+     *
+     * @var int
+     */
     private $rendezVouses;
 
     
@@ -91,12 +144,12 @@ class PatientDTO {
         return $this;
     }
 
-    public function getRendezVouses()
+    public function getRendezVouses() : RendezVousDTO
     {
         return $this->rendezVouses;
     }
  
-    public function setRendezVouses($rendezVouses)
+    public function setRendezVouses(RendezVousDTO $rendezVouses)
     {
         $this->rendezVouses = $rendezVouses;
         return $this;

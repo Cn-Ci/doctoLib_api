@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  title: 'Adresse Management'
+  description: 'Adresse Management'
+  version: V1
+paths:
+  /adresses:
+    get:
+      tags:
+        - adresses
+      summary: 'liste des AdresseDTO'
+      description: 'retourne la liste des AdresseDTO'
+      operationId: 'App\Controller\AdresseRestController::searchAll'
+      responses:
+        '200':
+          description: 'Opération réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdresseDTO'
+        '404':
+          description: 'Adresse non trouvée'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    post:
+      tags:
+        - adresses
+      summary: 'Créer une adresse'
+      description: 'creation de l''adresse'
+      operationId: 'App\Controller\AdresseRestController::create'
+      requestBody:
+        description: 'ProduitDTO JSON Object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdresseDTO'
+      responses:
+        '405':
+          description: 'Entrée invalide'
+        '201':
+          description: 'Adresse inséré avec succès'
+  '/adresses/{adresseId}':
+    get:
+      tags:
+        - adresses
+      summary: 'Trouve l''adresse par l''Id'
+      description: 'Retourne une seule adresse'
+      operationId: getadressesById
+      parameters:
+        -
+          name: adresseId
+          in: path
+          description: 'l''id de ladresse '
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Opération réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdresseDTO'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AdresseDTO'
+        '400':
+          description: 'Id est introuvable'
+        '404':
+          description: 'Adresse non trouvée'
+    put:
+      tags:
+        - adresses
+      summary: 'modification de l''adresse selon id'
+      description: 'modification de l''adresse'
+      operationId: 'App\Controller\AdresseRestController::update'
+      parameters:
+        -
+          name: adresseId
+          in: path
+          description: 'id de l''adresse à modifier'
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: 'Mise à jour de l''adresse'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdresseDTO'
+      responses:
+        '400':
+          description: 'Modification invalide'
+        '404':
+          description: 'Adresse non trouvée'
+    delete:
+      tags:
+        - adresses
+      summary: 'Supprimer une adresse'
+      description: 'Suprime une adresseDTO'
+      operationId: 'App\Controller\AdresseRestController::remove'
+      parameters:
+        -
+          name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+        -
+          name: adresseId
+          in: path
+          description: 'Id de l''adresse pour supprimer'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Opération réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdresseDTO'
+        '404':
+          description: 'Adresse non trouvée'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  /patients:
+    get:
+      tags:
+        - patients
+      summary: 'liste des patientDTO'
+      description: 'Retourne la liste des patientDTO'
+      operationId: 'App\Controller\PatientRestController::searchAll'
+      responses:
+        '200':
+          description: 'Operation '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDTO'
+        '404':
+          description: 'Patient non trouvé'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    post:
+      tags:
+        - patients
+      summary: 'Créer une patient'
+      description: 'creation d''un patient'
+      operationId: 'App\Controller\PatientRestController::create'
+      requestBody:
+        description: 'PatientDTO JSON Object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientDTO'
+      responses:
+        '405':
+          description: 'Entré valide'
+        '201':
+          description: 'patient inséré avec success'
+  '/patients/{patientId}':
+    put:
+      tags:
+        - patients
+      summary: 'modification du patient selon id'
+      description: 'modification du patient'
+      operationId: 'App\Controller\PatientRestController::update'
+      parameters:
+        -
+          name: patientId
+          in: path
+          description: 'id du patient à modifier'
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: 'Mise à jour de l''adresse'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientDTO'
+      responses:
+        '400':
+          description: 'Modification invalide'
+        '404':
+          description: 'patient non trouvé'
+    delete:
+      tags:
+        - patients
+      summary: 'Supprimer patient'
+      operationId: 'App\Controller\PatientRestController::remove'
+      parameters:
+        -
+          name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+        -
+          name: patientId
+          in: path
+          description: 'l''id du patient pour supprimer'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Opération reussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDTO'
+        '404':
+          description: 'Patient non trouvé'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/patiens/{patientId}':
+    get:
+      tags:
+        - patients
+      summary: 'Trouve un patient par ID'
+      description: 'Retourne un seul patient'
+      operationId: getpatientById
+      parameters:
+        -
+          name: patientId
+          in: path
+          description: 'Id du patient'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Operation réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDTO'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PatientDTO'
+        '400':
+          description: 'Invalid id'
+        '404':
+          description: 'patient non trouvé'
+  /praticiens:
+    get:
+      tags:
+        - praticiens
+      summary: 'listes des PraticienDTO'
+      description: 'Retourne la liste des PraticienDTO'
+      operationId: 'App\Controller\PraticienRestController::searchAll'
+      responses:
+        '200':
+          description: 'Operation reussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PraticienDTO'
+        '404':
+          description: 'Praticien non trouvé'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    post:
+      tags:
+        - praticiens
+      summary: 'Créer une praticien'
+      description: 'creation de praticien'
+      operationId: 'App\Controller\PraticienRestController::create'
+      requestBody:
+        description: 'PraticienDTO JSON Object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PraticienDTO'
+      responses:
+        '405':
+          description: 'Entré valid'
+        '201':
+          description: 'Praticien inséré avec succès'
+  '/praticiens/{praticienId}':
+    get:
+      tags:
+        - praticiens
+      summary: 'Find praticien by ID'
+      description: 'Returns a single praticien'
+      operationId: getpraticienById
+      parameters:
+        -
+          name: praticienId
+          in: path
+          description: 'ID of praticien to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PraticienDTO'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PraticienDTO'
+        '400':
+          description: 'Invalid ID supplier'
+        '404':
+          description: 'praticien not found'
+    put:
+      tags:
+        - praticiens
+      summary: 'modification du praticien selon id'
+      description: 'modification du praticien'
+      operationId: 'App\Controller\PraticienRestController::update'
+      parameters:
+        -
+          name: praticienId
+          in: path
+          description: 'id du praticien à modifier'
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: 'Mise à jour de l''adresse'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdresseDTO'
+      responses:
+        '400':
+          description: 'Modification invalide'
+        '404':
+          description: 'praticien non trouvé'
+    delete:
+      tags:
+        - praticiens
+      summary: 'Supprimer un praticien'
+      operationId: 'App\Controller\PraticienRestController::remove'
+      parameters:
+        -
+          name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+        -
+          name: praticienId
+          in: path
+          description: 'l''id praticien pour delete'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Opération reussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PraticienDTO'
+        '404':
+          description: 'Praticien non trouvé'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  /rendezVous:
+    get:
+      tags:
+        - rendezVous
+      summary: 'liste des rendezVousDTO'
+      description: 'retourne la liste des rendezVousDTO'
+      operationId: 'App\Controller\RendezVousRestController::searchAll'
+      responses:
+        '200':
+          description: 'Opération réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+        '404':
+          description: 'rendezVous non trouvée'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    post:
+      tags:
+        - rendezVous
+      summary: 'Créer un rendezVous'
+      description: 'creation d''un rendezVous'
+      operationId: 'App\Controller\RendezVousRestController::create'
+      requestBody:
+        description: 'RendezVousDTO JSON Object'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RendezVousDTO'
+      responses:
+        '405':
+          description: 'Entrée invalide'
+        '201':
+          description: 'rendezVous inséré avec succès'
+  '/rendezVous/{rendezVousId}':
+    get:
+      tags:
+        - rendezVous
+      summary: 'Trouve le rendezVous par l''Id'
+      description: 'Retourne un seul rendezVous'
+      operationId: getRendezVousById
+      parameters:
+        -
+          name: rendezVousId
+          in: path
+          description: 'l''id de rendezVous'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Opération réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+        '400':
+          description: 'Id est introuvable'
+        '404':
+          description: 'RendezVous non trouvée'
+    put:
+      tags:
+        - rendezVous
+      summary: 'modification du rendezVous selon id'
+      description: 'modification du rendezVous '
+      operationId: 'App\Controller\RendezVousRestController::update'
+      parameters:
+        -
+          name: rendezVousId
+          in: path
+          description: 'id du rendezVous à modifier'
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: 'Mise à jour du rendezVous'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RendezVousDTO'
+      responses:
+        '400':
+          description: 'Modification invalide'
+        '404':
+          description: 'RendezVous non trouvée'
+    delete:
+      tags:
+        - rendezVous
+      summary: 'Supprimer une rendezVous'
+      description: 'Suprime une rendezVousDTO'
+      operationId: 'App\Controller\RendezVousRestController::remove'
+      parameters:
+        -
+          name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+        -
+          name: rendezVousId
+          in: path
+          description: 'Id de rendezVous pour supprimer'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Opération réussi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+        '404':
+          description: 'rendezVous non trouvée'
+        '500':
+          description: 'Internal server Error. Please contact us'
+components:
+  schemas:
+    AdresseDTO:
+      properties:
+        id:
+          type: integer
+        numeroVoie:
+          type: integer
+        rue:
+          type: string
+        codePostal:
+          type: integer
+        ville:
+          type: string
+      type: object
+    PatientDTO:
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        prenom:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        telephone:
+          type: integer
+        adresse:
+          type: string
+        rendezVouses:
+          type: RendezVousDTO
+      type: object
+    PraticienDTO:
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        prenom:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        specialite:
+          type: string
+        telephone:
+          type: integer
+        rendezVouses:
+          type: 'RendezVousDTO '
+        adresse:
+          type: AdresseDTO
+      type: object
+    RendezVousDTO:
+      properties:
+        id:
+          type: integer
+        dateAndHeure:
+          title: 'heure et date du rendezVous'
+          description: 'heure et date du rendezVous'
+          type: string
+          format: datetime
+          default: '2017-02-02 18:31:45'
+        rendezVousPatient:
+          type: PatientDTO
+        rendezVousPraticien:
+          type: PraticienDTO
+      type: object

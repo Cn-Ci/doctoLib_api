@@ -18,6 +18,14 @@ use App\Service\Exceptions\PatientServiceException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+
+/**
+ * @OA\Info(
+ *      description="Patient Management",
+ *      version="V1",
+ *      title="Patient Management"
+ * )
+ */
 class PatientRestController extends AbstractController
 {
     const URI_PATIENT_COLLECTION = "/patients";
@@ -36,6 +44,26 @@ class PatientRestController extends AbstractController
     }
 
     /**
+     * 
+     * @OA\Get(
+     *     path="/patients",
+     *     tags={"patients"},
+     *     summary="liste des patientDTO",
+     *     description="Retourne la liste des patientDTO",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Operation ", 
+     *          @OA\JsonContent(ref="#/components/schemas/PatientDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Patient non trouvé",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
      * @Get(PatientRestController::URI_PATIENT_COLLECTION)
      */
     public function searchAll()
@@ -53,6 +81,43 @@ class PatientRestController extends AbstractController
     }
 
     /**
+     * @OA\Delete(
+     *     path="/patients/{patientId}",
+     *     tags={"patients"},
+     *     summary="Supprimer patient",
+     *     @OA\Parameter(
+     *         name="api_key",
+     *         in="header",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="patientId",
+     *         in="path",
+     *         description="l'id du patient pour supprimer",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Opération reussi", 
+     *          @OA\JsonContent(ref="#/components/schemas/PatientDTO")
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Patient non trouvé",    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us",    
+     *     )
+     * )
+     * 
      * @Delete(PatientRestController::URI_PATIENT_INSTANCE)
      *
      * @param [type] $id
@@ -68,6 +133,25 @@ class PatientRestController extends AbstractController
     }
 
     /**
+     * @OA\Post(
+     *     path="/patients",
+     *     tags={"patients"},
+     *     summary="Créer une patient",
+     *     description="creation d'un patient",
+     *     @OA\Response(
+     *         response=405,
+     *         description="Entré valide"
+     *     ),
+     *  @OA\Response(
+     *         response=201,
+     *         description="patient inséré avec success"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="PatientDTO JSON Object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/PatientDTO")
+     *     )
+     * )
      * 
      * @Post(PatientRestController::URI_PATIENT_COLLECTION)
      * @ParamConverter("patientDTO", converter="fos_rest.request_body")
@@ -82,7 +166,36 @@ class PatientRestController extends AbstractController
         }
     }
 
-        /**
+    /**
+     * @OA\Put(
+     *     path="/patients/{patientId}",
+     *     tags={"patients"},
+     *     summary="modification du patient selon id",
+     *     description="modification du patient",
+     *     @OA\Parameter(
+     *         name="patientId",
+     *         in="path",
+     *         description="id du patient à modifier",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="number"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Modification invalide"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="patient non trouvé"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Mise à jour de l'adresse",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/PatientDTO")
+     *     )
+     * )
+     * 
      * @Put(PatientRestController::URI_PATIENT_INSTANCE)
      * @ParamConverter("patientDTO", converter="fos_rest.request_body")
      * @param patientDTO $patientDTO
@@ -98,6 +211,38 @@ class PatientRestController extends AbstractController
     }
 
     /**
+ * @OA\Get(
+     *     path="/patiens/{patientId}",
+     *     tags={"patients"},
+     *     summary="Trouve un patient par ID",
+     *     description="Retourne un seul patient",
+     *     operationId="getpatientById",
+     *     @OA\Parameter(
+     *         name="patientId",
+     *         in="path",
+     *         description="Id du patient",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Operation réussi",
+     *         @OA\JsonContent(ref="#/components/schemas/PatientDTO"),
+     *         @OA\XmlContent(ref="#/components/schemas/PatientDTO"),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid id"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="patient non trouvé"
+     *     ),
+     * )
+     * 
      * @Get(PatientRestController::URI_PATIENT_INSTANCE)
      *
      * @return void
