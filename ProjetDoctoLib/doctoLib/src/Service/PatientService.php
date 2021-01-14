@@ -54,7 +54,7 @@ class PatientService {
             //     // Cas de création d'une nouvelle Patient
             //     $Patient = new Patient();
             // }
-        
+            $adresse = $this->adresseRepository->find($praticienDTO->getRendezVouses());
             $patient = $this->patientMapper->transformePatientDTOToPatientEntity($patientDTO, $patient);
             $this->entityManager->persist($patient);
             $this->entityManager->flush();

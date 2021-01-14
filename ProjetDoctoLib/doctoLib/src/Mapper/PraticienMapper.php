@@ -28,6 +28,11 @@ class PraticienMapper {
     }
 
     public function transformePraticienEntityToPraticienDTO(praticien $praticien){
+        $rdvs = $praticien->getRendezVouses();
+            foreach($rdvs as $rdv){
+                $idsRdvs[]=$rdv->getId();
+            };
+
         $praticienDTO = new praticienDTO();
         $praticienDTO->setId($praticien->getId());
         $praticienDTO->setNom($praticien->getNom());
@@ -36,7 +41,7 @@ class PraticienMapper {
         $praticienDTO->setPassword($praticien->getPassword());
         $praticienDTO->setSpecialite($praticien->getSpecialite());
         $praticienDTO->setTelephone($praticien->getTelephone());
-        $praticienDTO->setAdresse($this->adresseMapper->transformeAdresseEntityToAdresseDTO($praticien->getAdresse()));
+        $praticienDTO->setRendezVouses($idsRdvs);
         return $praticienDTO;
     }
 }

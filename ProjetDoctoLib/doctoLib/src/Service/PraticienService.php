@@ -56,7 +56,7 @@ class PraticienService {
             //     // Cas de création d'une nouvelle Praticien
             //     $Praticien = new Praticien();
             // }
-            $adresse = $this->adresseRepository->find($praticienDTO->getAdresse()->getId());
+            $adresse = $this->adresseRepository->find($praticienDTO->getRendezVouses());
             $praticien = $this->praticienMapper->transformePraticienDTOToPraticienEntity($praticienDTO, $praticien, $adresse);
             $this->entityManager->persist($praticien);
             $this->entityManager->flush();

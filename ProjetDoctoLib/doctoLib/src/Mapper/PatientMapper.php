@@ -8,7 +8,7 @@ use App\Entity\Patient;
 
 class PatientMapper {
 
-    public function transformePatientDTOToPatientEntity(PatientDTO $patientDTO, Patient $patient){
+    public function transformePatientDTOToPatientEntity(PatientDTO $patientDTO, Patient $patient, RendezVous $rendezVous){
         // $patient->setId($patientDTO->getId());
         $patient->setNom($patientDTO->getNom());
         $patient->setPrenom($patientDTO->getPrenom());
@@ -16,6 +16,7 @@ class PatientMapper {
         $patient->setPassword($patientDTO->getPassword());
         $patient->setTelephone($patientDTO->getTelephone());
         $patient->setAdresse($patientDTO->getAdresse());
+        $patient->setRendezVouses($rendezVous);
         return $patient;
     }
 
