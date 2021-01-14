@@ -531,7 +531,10 @@ components:
         adresse:
           type: string
         rendezVouses:
-          type: RendezVousDTO
+          description: ''
+          type: array
+          items:
+            type: object
       type: object
     PraticienDTO:
       properties:
@@ -550,9 +553,15 @@ components:
         telephone:
           type: integer
         rendezVouses:
-          type: 'RendezVousDTO '
+          description: ''
+          type: array
+          items:
+            type: object
         adresse:
-          type: AdresseDTO
+          description: ''
+          type: array
+          items:
+            type: object
       type: object
     RendezVousDTO:
       properties:
@@ -565,7 +574,13 @@ components:
           format: datetime
           default: '2017-02-02 18:31:45'
         rendezVousPatient:
-          type: PatientDTO
+          description: ''
+          type: array
+          items:
+            type: object
         rendezVousPraticien:
-          type: PraticienDTO
+          description: ''
+          type: array
+          items:
+            type: object
       type: object

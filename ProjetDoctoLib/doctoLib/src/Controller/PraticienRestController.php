@@ -8,6 +8,7 @@ use App\Service\PraticienService;
 use App\DTO\PraticienDTO;
 use App\Entity\Praticien;
 use FOS\RestBundle\View\View;
+use OpenApi\Annotations as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Put;

@@ -30,20 +30,26 @@ class RendezVousDTO
     private $dateAndHeure;
 
     /**
-     * @OA\Property(type="PatientDTO")
+     * @OA\Property(
+     *      type="PatientDTO",
+     *      description="",
+     *      type="array",
+     *      items= {"type"="object"}
+     * )
      *
-     * @var int 
+     * @var array 
      */
     private $rendezVousPatient;
 
     /**
-      * @OA\Property(
-     *     description="heure et date du rendezVous",
-     *     title="heure et date du rendezVous",
-     *     type=array
+     * @OA\Property(
+     *      type="PraticienDTO",
+     *      description="",
+     *      type="array",
+     *      items= {"type"="object"}
      * )
      *
-     * @var int
+     * @var array
      */
     private $rendezVousPraticien;
 
@@ -69,23 +75,23 @@ class RendezVousDTO
         return $this;
     }
 
-    public function getRendezVousPatient(): ?PatientDTO
+    public function getRendezVousPatient(): ?array
     {
         return $this->rendezVousPatient;
     }
 
-    public function setRendezVousPatient(?PatientDTO $rendezVousPatient): self
+    public function setRendezVousPatient(?array $rendezVousPatient): self
     {
         $this->rendezVousPatient = $rendezVousPatient;
         return $this;
     }
 
-    public function getRendezVousPraticien(): ?PraticienDTO
+    public function getRendezVousPraticien(): ?array
     {
         return $this->rendezVousPraticien;
     }
 
-    public function setRendezVousPraticien(?PraticienDTO $rendezVousPraticien): self
+    public function setRendezVousPraticien(?array $rendezVousPraticien): self
     {
         $this->rendezVousPraticien = $rendezVousPraticien;
         return $this;

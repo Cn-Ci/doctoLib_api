@@ -59,17 +59,25 @@ class PraticienDTO
      */
     private $telephone;
 
-    /**
-     * @OA\Property(type="RendezVousDTO ")
+    /** @OA\Property(
+     *      type="RendezVousDTO",
+     *      description="",
+     *      type="array",
+     *      items= {"type"="object"}
+     * )
      *
-     * @var RendezVousDTO
+     * @var array
      */
     private $rendezVouses;
 
-    /**
-     * @OA\Property(type="AdresseDTO")
+    /** @OA\Property(
+     *      type="AdresseDTO",
+     *      description="",
+     *      type="array",
+     *      items= {"type"="object"}
+     * )
      *
-     * @var AdresseDTO
+     * @var array
      */
     private $adresse;
 
@@ -151,23 +159,23 @@ class PraticienDTO
         return $this;
     }
 
-    public function getRendezVouses(): RendezVousDTO
+    public function getRendezVouses(): array
     {
         return $this->rendezVouses;
     }
 
-    public function setRendezVouses(RendezVousDTO $rendezVouses): self
+    public function setRendezVouses(array $rendezVouses): self
     {
         $this->rendezVouses = $rendezVouses;
         return $this;
     }
 
-    public function getAdresse(): AdresseDTO
+    public function getAdresse(): array
     {
         return $this->adresse;
     }
 
-    public function setAdresse(AdresseDTO $adresse)
+    public function setAdresse(array $adresse)
     {
         $this->adresse = $adresse;
 

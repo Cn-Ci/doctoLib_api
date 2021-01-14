@@ -8,6 +8,7 @@ use App\Entity\Patient;
 use App\Mapper\PatientMapper;
 use FOS\RestBundle\View\View;
 use App\Service\PatientService;
+use OpenApi\Annotations as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Put;

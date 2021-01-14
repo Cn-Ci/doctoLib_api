@@ -60,9 +60,14 @@ class PatientDTO {
     private $adresse;
 
      /**
-     * @OA\Property(type="RendezVousDTO")
+     * @OA\Property(
+     *      type="RendezVousDTO",
+     *      description="",
+     *      type="array",
+     *      items= {"type"="object"}
+     * )
      *
-     * @var int
+     * @var array
      */
     private $rendezVouses;
 
@@ -144,12 +149,12 @@ class PatientDTO {
         return $this;
     }
 
-    public function getRendezVouses() : RendezVousDTO
+    public function getRendezVouses() : array
     {
         return $this->rendezVouses;
     }
  
-    public function setRendezVouses(RendezVousDTO $rendezVouses)
+    public function setRendezVouses(array $rendezVouses)
     {
         $this->rendezVouses = $rendezVouses;
         return $this;

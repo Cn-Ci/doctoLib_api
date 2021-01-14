@@ -20,6 +20,11 @@ class PatientMapper {
     }
 
     public function transformePatientEntityToPatientDTO(Patient $patient){
+        $rdvs = $patient->getRendezVouses();
+            foreach($rdvs as $rdv){
+                $idsRdvs[]=$rdv->getId();
+            };
+
         $patientDTO = new PatientDTO();
         $patientDTO->setId($patient->getId());
         $patientDTO->setNom($patient->getNom());
@@ -28,6 +33,7 @@ class PatientMapper {
         $patientDTO->setPassword($patient->getPassword());
         $patientDTO->setTelephone($patient->getTelephone());
         $patientDTO->setAdresse($patient->getAdresse());
+        $patientDTO->setRendezVouses($idsRdvs);        
         return $patientDTO;
     }
 }

@@ -28,11 +28,20 @@ class RendezVousMapper {
     }
 
     public function transformeRendezVousEntityToRendezVousDTO(RendezVous $rendezVous){
+        $rdvPatients = $rendezVous->getRendezVousPatient();
+            foreach($rdvPatients as $rdvPatient){
+                $idsRdvsPatient[]=$rdvPatient->getId();
+            };
+        $rdvPraticiens = $rendezVous->getRendezVousPraticien();
+        foreach($rdvPraticiens as $rdvPraticien){
+            $idsRdvsPraticien[]=$rdvPraticien->getId();
+        };
+
         $rendezVousDTO = new rendezVousDTO();
         $rendezVousDTO->setId($rendezVous->getId());
         $rendezVousDTO->setDateAndHeure($rendezVous->getDateAndHeure());
-        $rendezVousDTO->setRendezVousPatient($this->patientMapper->transformePatientEntityToPatientDTO($rendezVous->getRendezVousPatient()));
-        $rendezVousDTO->setRendezVousPraticien($this->praticienMapper->transformePraticienEntityToPraticienDTO($rendezVous->getRendezVousPraticien()));
+        $rendezVousDTO->setRendezVousPatient($idsRdvsPatient); 
+        $rendezVousDTO->setRendezVousPraticien($idsRdvsPraticien); 
         return $rendezVousDTO;
     }
 }
