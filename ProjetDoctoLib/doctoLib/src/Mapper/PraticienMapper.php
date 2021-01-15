@@ -15,7 +15,7 @@ class PraticienMapper {
         $this->adresseMapper = $adresseMapper;
     }
 
-    public function transformePraticienDTOToPraticienEntity(PraticienDTO $praticienDTO, Praticien $praticien, Adresse $adresse, $rendezVous){
+    public function transformePraticienDTOToPraticienEntity(PraticienDTO $praticienDTO, Praticien $praticien, array $adresse, array $rendezVous){
         // $praticien->setId($praticienDTO->getId());
         $praticien->setNom($praticienDTO->getNom());
         $praticien->setPrenom($praticienDTO->getPrenom());
@@ -23,7 +23,9 @@ class PraticienMapper {
         $praticien->setPassword($praticienDTO->getPassword());
         $praticien->setSpecialite($praticienDTO->getSpecialite());
         $praticien->setTelephone($praticienDTO->getTelephone());
-        $praticien->setAdresse($adresse);
+        foreach($adresse as $adress){
+            $praticien->setAdresse($adress);
+        }
         foreach($rendezVous as $rdv){
             $praticien->addRendezVouse($rdv);
         }
@@ -37,9 +39,9 @@ class PraticienMapper {
                     ($praticien->getAdresse())->getCodePostal(),
                     ($praticien->getAdresse())->getVille()
                 ];
-        
+         
         $rdvs = $praticien->getRendezVouses();
-        $idsRdvs[]=0;
+        $idsRdvs[]=1;
             foreach($rdvs as $rdv){
                 $idsRdvs[]=$rdv->getId();
             };
@@ -58,7 +60,6 @@ class PraticienMapper {
     }
 }
 
-//** GET    => OK */
-//** PUT    => "The identifier id is missing for a query of App\\Entity\\Adresse" */
-//** POST   => "The identifier id is missing for a query of App\\Entity\\Adresse" */
-//** DELETE => OK */
+
+//** DELETE => KO */
+//** RendezVous en entier */

@@ -8,7 +8,7 @@ use App\Entity\Praticien;
 
 class AdresseMapper {
 
-    public function transformeAdresseDTOToAdresseEntity(AdresseDTO $adresseDTO, Adresse $adresse, Praticien $praticiens){
+    public function transformeAdresseDTOToAdresseEntity(AdresseDTO $adresseDTO, Adresse $adresse, array $praticiens){
         // $adresse->setId($adresseDTO->getId());
         $adresse->setNumeroVoie($adresseDTO->getNumeroVoie());
         $adresse->setRue($adresseDTO->getRue());
@@ -22,7 +22,7 @@ class AdresseMapper {
 
     public function transformeAdresseEntityToAdresseDTO(Adresse $adresse){
         $praticiens = $adresse->getPraticiens();
-        $praticiensIds[]=0;
+        $praticiensIds[]=1;
             foreach($praticiens as $praticien){
                 $praticiensIds[]=$praticien->getId();
             };
@@ -38,7 +38,4 @@ class AdresseMapper {
     }
 }
 
-//** GET    => OK */
-//** PUT    => "The identifier id is missing for a query of App\\Entity\\Praticien" */
-//** POST   => "The identifier id is missing for a query of App\\Entity\\Praticien" */
-//** DELETE => OK */
+//** praticien en entier */

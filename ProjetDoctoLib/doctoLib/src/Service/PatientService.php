@@ -61,7 +61,10 @@ class PatientService {
             // }
 
             $rendezVouss=$patientDTO->getRendezVouses();
-            $rendezVous=$this->patientRepository->find($rendezVouss);
+            $rendezVous = [];
+            foreach($rendezVouss as $rdvKey => $rdvValue){
+                $rendezVous[]=$this->rendezVousRepository->findOneby(['id' => $rdvValue]);
+            }
 
             $patient = $this->patientMapper->transformePatientDTOToPatientEntity($patientDTO, $patient, $rendezVous);
             $this->entityManager->persist($patient);

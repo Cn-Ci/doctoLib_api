@@ -19,12 +19,19 @@ class RendezVousMapper {
         $this->praticienMapper = $praticienMapper; 
     }
 
-    public function transformeRendezVousDTOToRendezVousEntity(RendezVousDTO $rendezVousDTO, RendezVous $rendezVous, Patient $patient, Praticien $praticien){
+    public function transformeRendezVousDTOToRendezVousEntity(RendezVousDTO $rendezVousDTO, RendezVous $rendezVous, array $patient, array $praticien){
         // $rendezVous->setId($rendezVousDTO->getId());
         $rendezVous->setDateAndHeure($rendezVousDTO->getDateAndHeure());
-        $rendezVous->setRendezVousPatient($patient);
-        $rendezVous->setRendezVousPraticien($praticien);
+
+        foreach($patient as $rdvPatient){
+            $rendezVous->setRendezVousPatient($rdvPatient);
+        }
+
+        foreach($praticien as $rdvpraticien){
+            $rendezVous->setRendezVousPraticien($rdvpraticien);
+
         return $rendezVous;
+        }
     }
 
     public function transformeRendezVousEntityToRendezVousDTO(RendezVous $rendezVous){
@@ -53,7 +60,5 @@ class RendezVousMapper {
     }
 }
 
-//** GET    => OK */
-//** PUT    => "The identifier id is missing for a query of App\\Entity\\Patient" */
-//** POST   => "The identifier id is missing for a query of App\\Entity\\Patient" */
-//** DELETE => OK */
+
+//** POST   => IdPatient Null */

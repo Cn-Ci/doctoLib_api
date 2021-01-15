@@ -60,15 +60,19 @@ class PraticienService {
             //     $Praticien = new Praticien();
             // }
 
-            $rendezVousIds[]=$praticienDTO->getRendezVouses();
-            foreach ($rendezVousIds as $rendezVousId){
-                foreach($rendezVousId as $rdvId){
-                    $rendezVouss[]=$this->rendezVousRepository->find($rdvId);
-                }
+            $rendezVouss=$praticienDTO->getRendezVouses();
+            $rendezVous = [];
+            foreach($rendezVouss as $rdvKey => $rdvValue){
+                $rendezVous[]=$this->rendezVousRepository->findOneby(['id' => $rdvValue]);
             }
 
-            $adresse = $this->adresseRepository->find($praticienDTO->getRendezVouses());
-            $praticien = $this->praticienMapper->transformePraticienDTOToPraticienEntity($praticienDTO, $praticien, $adresse, $rendezVouss);
+            $adresses=$praticienDTO->getRendezVouses();
+            $adresse = [];
+            foreach($adresses as $adresseKey => $adresseValue){
+                $adresse[]=$this->adresseRepository->findOneby(['id' => $adresseValue]);
+            }
+            
+            $praticien = $this->praticienMapper->transformePraticienDTOToPraticienEntity($praticienDTO, $praticien, $adresse, $rendezVous);
             $this->entityManager->persist($praticien);
             $this->entityManager->flush();
         } catch(DriverException $e){

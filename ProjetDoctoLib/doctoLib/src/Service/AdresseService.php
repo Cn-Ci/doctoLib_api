@@ -56,11 +56,12 @@ class AdresseService {
             //     // Cas de création d'une nouvelle adresse
             //     $adresse = new Adresse();
             // }
-        
-            
             $praticiens=$adresseDTO->getPraticiens();
-            $praticien=$this->praticienRepository->find($praticiens);
-
+            $praticien = [];
+            foreach($praticiens as $praticienKey => $praticienValue){
+                $praticien[]=$this->praticienRepository->findOneby(['id' => $praticienValue]);
+            }
+         
             $adresse = $this->adresseMapper->transformeAdresseDtoToAdresseEntity($adresseDTO, $adresse, $praticien);
             $this->entityManager->persist($adresse);
             $this->entityManager->flush();

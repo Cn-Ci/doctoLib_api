@@ -9,7 +9,7 @@ use App\Entity\RendezVous;
 
 class PatientMapper {
 
-    public function transformePatientDTOToPatientEntity(PatientDTO $patientDTO, Patient $patient, RendezVous $rendezVous){
+    public function transformePatientDTOToPatientEntity(PatientDTO $patientDTO, Patient $patient, array $rendezVous){
         // $patient->setId($patientDTO->getId());
         $patient->setNom($patientDTO->getNom());
         $patient->setPrenom($patientDTO->getPrenom());
@@ -25,7 +25,7 @@ class PatientMapper {
 
     public function transformePatientEntityToPatientDTO(Patient $patient){ 
         $rdvs = $patient->getRendezVouses();
-        $idsRdvs[]=0;
+        $idsRdvs[]=1;
             foreach($rdvs as $rdv){
                 $idsRdvs[]=$rdv->getId();
             };
@@ -43,7 +43,4 @@ class PatientMapper {
     }
 }
 
-//** GET    => OK */
-//** PUT    => "The identifier id is missing for a query of App\\Entity\\Patient" */
-//** POST   => "The identifier id is missing for a query of App\\Entity\\Patient" */
-//** DELETE => OK */
+//** RendezVous en entier */

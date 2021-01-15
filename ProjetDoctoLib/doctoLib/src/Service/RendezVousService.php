@@ -59,8 +59,19 @@ class RendezVousService {
             //     $RendezVous = new RendezVous();
             // }
         
-            $patient = $this->patientRepository->find($rendezVousDTO->getRendezVousPatient());
-            $praticien = $this->praticienRepository->find($rendezVousDTO->getRendezVousPraticien());
+            $patients=$rendezVousDTO->getRendezVousPatient();
+            $patient = [];
+            foreach($patients as $patientRdv => $patientValue){
+                $patient[]=$this->patientRepository->findOneby(['id' => $patientValue]);
+            }
+
+            $praticiens=$rendezVousDTO->getRendezVousPraticien();
+            $praticien = [];
+            foreach($praticiens as $praticienRdv => $praticienValue){
+                $praticien[]=$this->praticienRepository->findOneby(['id' => $praticienValue]);
+            }
+           
+        
             $rendezVous = $this->rendezVousMapper->transformeRendezVousDtoToRendezVousEntity($rendezVousDTO, $rendezVous, $patient, $praticien);
           
             $this->entityManager->persist($rendezVous);

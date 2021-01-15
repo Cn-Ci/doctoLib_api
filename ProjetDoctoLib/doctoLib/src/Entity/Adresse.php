@@ -43,7 +43,7 @@ class Adresse
     private $ville;
 
     /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adresse", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adresse", cascade={"persist", "remove"})
      */
     private $praticiens;
 
