@@ -158,6 +158,7 @@ class RendezVousRestController extends AbstractController
      * @return void
      */
     public function create(RendezvousDTO $rendezVousDTO){
+        //var_dump($rendezVousDTO);
         try {
             $this->rendezVousService->persist(new Rendezvous(), $rendezVousDTO);
             return View::create([], Response::HTTP_CREATED, ["Content-type" => "application/json"]);

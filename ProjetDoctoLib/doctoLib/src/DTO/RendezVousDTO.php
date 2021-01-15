@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema()

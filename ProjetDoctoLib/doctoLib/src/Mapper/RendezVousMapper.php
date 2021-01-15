@@ -28,20 +28,32 @@ class RendezVousMapper {
     }
 
     public function transformeRendezVousEntityToRendezVousDTO(RendezVous $rendezVous){
-        $rdvPatients = $rendezVous->getRendezVousPatient();
-            foreach($rdvPatients as $rdvPatient){
-                $idsRdvsPatient[]=$rdvPatient->getId();
-            };
-        $rdvPraticiens = $rendezVous->getRendezVousPraticien();
-        foreach($rdvPraticiens as $rdvPraticien){
-            $idsRdvsPraticien[]=$rdvPraticien->getId();
-        };
+        $rendezVousPatients=[ ($rendezVous->getRendezVousPatient())->getId(),
+                                ($rendezVous->getRendezVousPatient())->getNom(),
+                                ($rendezVous->getRendezVousPatient())->getPrenom(),
+                                ($rendezVous->getRendezVousPatient())->getEmail(),
+                                ($rendezVous->getRendezVousPatient())->getTelephone(),
+                                ($rendezVous->getRendezVousPatient())->getAdresse(),
+                            ];
+
+        $rendezVousPraticiens=[ ($rendezVous->getRendezVousPraticien())->getId(),
+                                ($rendezVous->getRendezVousPraticien())->getNom(),
+                                ($rendezVous->getRendezVousPraticien())->getPrenom(),
+                                ($rendezVous->getRendezVousPraticien())->getEmail(),
+                                ($rendezVous->getRendezVousPraticien())->getSpecialite(),
+                                ($rendezVous->getRendezVousPraticien())->getTelephone(),
+                            ];
 
         $rendezVousDTO = new rendezVousDTO();
         $rendezVousDTO->setId($rendezVous->getId());
         $rendezVousDTO->setDateAndHeure($rendezVous->getDateAndHeure());
-        $rendezVousDTO->setRendezVousPatient($idsRdvsPatient); 
-        $rendezVousDTO->setRendezVousPraticien($idsRdvsPraticien); 
+        $rendezVousDTO->setRendezVousPatient($rendezVousPatients); 
+        $rendezVousDTO->setRendezVousPraticien($rendezVousPraticiens); 
         return $rendezVousDTO;
     }
 }
+
+//** GET    => OK */
+//** PUT    => "The identifier id is missing for a query of App\\Entity\\Patient" */
+//** POST   => "The identifier id is missing for a query of App\\Entity\\Patient" */
+//** DELETE => OK */

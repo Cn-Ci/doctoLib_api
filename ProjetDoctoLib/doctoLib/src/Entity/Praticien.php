@@ -59,12 +59,12 @@ class Praticien
     private $telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPraticien", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPraticien", cascade={"persist"})
      */
     private $rendezVouses;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="praticiens", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="praticiens", cascade={"persist"})
      */
     private $adresse;
 
@@ -188,7 +188,6 @@ class Praticien
     public function setAdresse(?Adresse $adresse): self
     {
         $this->adresse = $adresse;
-
         return $this;
     }
 }

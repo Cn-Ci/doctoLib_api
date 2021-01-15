@@ -6,6 +6,7 @@ use App\DTO\AdresseDTO;
 use App\Entity\Adresse;
 use App\Mapper\AdresseMapper;
 use App\Repository\AdresseRepository;
+use App\Repository\PraticienRepository;
 use App\Service\Exceptions\AdresseServiceException;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,11 +16,13 @@ class AdresseService {
     private $repository;
     private $entityManager;
     private $adresseMapper;
+    private $praticienRepository;
 
-    public function __construct(AdresseRepository $repo, EntityManagerInterface $entityManager, AdresseMapper $mapper){
+    public function __construct(AdresseRepository $repo, EntityManagerInterface $entityManager, AdresseMapper $mapper, PraticienRepository $praticienRepository){
         $this->repository = $repo;
         $this->entityManager = $entityManager;
         $this->adresseMapper = $mapper;
+        $this->praticienRepository = $praticienRepository;
     }
 
     public function searchAll(){
@@ -54,7 +57,11 @@ class AdresseService {
             //     $adresse = new Adresse();
             // }
         
-            $adresse = $this->adresseMapper->transformeAdresseDtoToAdresseEntity($adresseDTO, $adresse);
+            
+            $praticiens=$adresseDTO->getPraticiens();
+            $praticien=$this->praticienRepository->find($praticiens);
+
+            $adresse = $this->adresseMapper->transformeAdresseDtoToAdresseEntity($adresseDTO, $adresse, $praticien);
             $this->entityManager->persist($adresse);
             $this->entityManager->flush();
         } catch(DriverException $e){

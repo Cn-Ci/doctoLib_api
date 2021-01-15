@@ -2,7 +2,6 @@
 
 namespace App\DTO;
 
-use App\DTO\AdresseDTO;
 use OpenApi\Annotations as OA;
 
 /**

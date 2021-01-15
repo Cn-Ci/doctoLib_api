@@ -2,7 +2,6 @@
 
 namespace App\DTO;
 
-use App\DTO\RendezVousDTO;
 use OpenApi\Annotations as OA;
 
 /**

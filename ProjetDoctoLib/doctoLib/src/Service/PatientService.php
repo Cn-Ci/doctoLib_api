@@ -6,6 +6,7 @@ use App\DTO\PatientDTO;
 use App\Entity\Patient;
 use App\Mapper\PatientMapper;
 use App\Repository\PatientRepository;
+use App\Repository\RendezVousRepository;
 use App\Service\Exceptions\PatientServiceException;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,11 +16,15 @@ class PatientService {
     private $repository;
     private $entityManager;
     private $patientMapper;
+    private $rendezVousRepository;
+    private $patientRepository;
 
-    public function __construct(PatientRepository $repo, EntityManagerInterface $entityManager, PatientMapper $patientMapper){
+    public function __construct(PatientRepository $repo, EntityManagerInterface $entityManager, PatientMapper $patientMapper, RendezVousRepository $rendezVousRepository, PatientRepository $patientRepository){
         $this->repository = $repo;
         $this->entityManager = $entityManager;
         $this->patientMapper = $patientMapper;
+        $this->rendezVousRepository = $rendezVousRepository;
+        $this->patientRepository = $patientRepository;
     }
 
     public function searchAll(){
@@ -54,8 +59,11 @@ class PatientService {
             //     // Cas de création d'une nouvelle Patient
             //     $Patient = new Patient();
             // }
-            $adresse = $this->adresseRepository->find($praticienDTO->getRendezVouses());
-            $patient = $this->patientMapper->transformePatientDTOToPatientEntity($patientDTO, $patient);
+
+            $rendezVouss=$patientDTO->getRendezVouses();
+            $rendezVous=$this->patientRepository->find($rendezVouss);
+
+            $patient = $this->patientMapper->transformePatientDTOToPatientEntity($patientDTO, $patient, $rendezVous);
             $this->entityManager->persist($patient);
             $this->entityManager->flush();
         } catch(DriverException $e){

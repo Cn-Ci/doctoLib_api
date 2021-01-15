@@ -58,7 +58,7 @@ class Patient {
     private $adresse;
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPatient", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="rendezVousPatient", cascade={"persist"})
      */
     private $rendezVouses;
 

@@ -44,6 +44,18 @@ class AdresseDTO
      */
     private $ville;
 
+   /**
+     * @OA\Property(
+     *      type="PraticienDTO",
+     *      description="",
+     *      type="array",
+     *      items= {"type"="object"}
+     * )
+     *
+     * @var array
+     */
+    private $praticiens;
+
 
     public function setId(?int $id): self
     {
@@ -100,4 +112,14 @@ class AdresseDTO
         return $this;
     }
 
+    public function getPraticiens() :array
+    {
+        return $this->praticiens;
+    }
+
+    public function setPraticiens(array $praticiens)
+    {
+        $this->praticiens = $praticiens;
+        return $this;
+    }
 }

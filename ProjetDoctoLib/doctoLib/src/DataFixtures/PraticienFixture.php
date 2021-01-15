@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Adresse;
 use App\Entity\Praticien;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;

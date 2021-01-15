@@ -15,7 +15,7 @@ class PraticienMapper {
         $this->adresseMapper = $adresseMapper;
     }
 
-    public function transformePraticienDTOToPraticienEntity(PraticienDTO $praticienDTO, Praticien $praticien, Adresse $adresse){
+    public function transformePraticienDTOToPraticienEntity(PraticienDTO $praticienDTO, Praticien $praticien, Adresse $adresse, $rendezVous){
         // $praticien->setId($praticienDTO->getId());
         $praticien->setNom($praticienDTO->getNom());
         $praticien->setPrenom($praticienDTO->getPrenom());
@@ -24,11 +24,22 @@ class PraticienMapper {
         $praticien->setSpecialite($praticienDTO->getSpecialite());
         $praticien->setTelephone($praticienDTO->getTelephone());
         $praticien->setAdresse($adresse);
+        foreach($rendezVous as $rdv){
+            $praticien->addRendezVouse($rdv);
+        }
         return $praticien;
     }
 
     public function transformePraticienEntityToPraticienDTO(praticien $praticien){
+        $adresse=[ ($praticien->getAdresse())->getId(),
+                    ($praticien->getAdresse())->getNumeroVoie(),
+                    ($praticien->getAdresse())->getRue(),
+                    ($praticien->getAdresse())->getCodePostal(),
+                    ($praticien->getAdresse())->getVille()
+                ];
+        
         $rdvs = $praticien->getRendezVouses();
+        $idsRdvs[]=0;
             foreach($rdvs as $rdv){
                 $idsRdvs[]=$rdv->getId();
             };
@@ -41,7 +52,13 @@ class PraticienMapper {
         $praticienDTO->setPassword($praticien->getPassword());
         $praticienDTO->setSpecialite($praticien->getSpecialite());
         $praticienDTO->setTelephone($praticien->getTelephone());
+        $praticienDTO->setAdresse($adresse);
         $praticienDTO->setRendezVouses($idsRdvs);
         return $praticienDTO;
     }
 }
+
+//** GET    => OK */
+//** PUT    => "The identifier id is missing for a query of App\\Entity\\Adresse" */
+//** POST   => "The identifier id is missing for a query of App\\Entity\\Adresse" */
+//** DELETE => OK */

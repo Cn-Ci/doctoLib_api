@@ -5,6 +5,7 @@ namespace App\Mapper;
 
 use App\DTO\PatientDTO;
 use App\Entity\Patient;
+use App\Entity\RendezVous;
 
 class PatientMapper {
 
@@ -16,12 +17,15 @@ class PatientMapper {
         $patient->setPassword($patientDTO->getPassword());
         $patient->setTelephone($patientDTO->getTelephone());
         $patient->setAdresse($patientDTO->getAdresse());
-        $patient->setRendezVouses($rendezVous);
+        foreach($rendezVous as $rdv){
+            $patient->addRendezVouse($rdv);
+        }
         return $patient;
     }
 
-    public function transformePatientEntityToPatientDTO(Patient $patient){
+    public function transformePatientEntityToPatientDTO(Patient $patient){ 
         $rdvs = $patient->getRendezVouses();
+        $idsRdvs[]=0;
             foreach($rdvs as $rdv){
                 $idsRdvs[]=$rdv->getId();
             };
@@ -38,3 +42,8 @@ class PatientMapper {
         return $patientDTO;
     }
 }
+
+//** GET    => OK */
+//** PUT    => "The identifier id is missing for a query of App\\Entity\\Patient" */
+//** POST   => "The identifier id is missing for a query of App\\Entity\\Patient" */
+//** DELETE => OK */

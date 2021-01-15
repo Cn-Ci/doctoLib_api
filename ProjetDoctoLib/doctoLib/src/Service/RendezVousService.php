@@ -62,6 +62,7 @@ class RendezVousService {
             $patient = $this->patientRepository->find($rendezVousDTO->getRendezVousPatient());
             $praticien = $this->praticienRepository->find($rendezVousDTO->getRendezVousPraticien());
             $rendezVous = $this->rendezVousMapper->transformeRendezVousDtoToRendezVousEntity($rendezVousDTO, $rendezVous, $patient, $praticien);
+          
             $this->entityManager->persist($rendezVous);
             $this->entityManager->flush();
         } catch(DriverException $e){
