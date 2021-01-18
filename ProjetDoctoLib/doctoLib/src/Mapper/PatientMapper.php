@@ -43,4 +43,3 @@ class PatientMapper {
     }
 }
 
-//** RendezVous en entier */
